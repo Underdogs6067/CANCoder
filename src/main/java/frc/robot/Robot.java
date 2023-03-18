@@ -8,8 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.Joystick;
-import com.ctre.phoenix.sensors.CANCoder;
-
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.CANCoderFaults;
+import com.ctre.phoenix.sensors.CANCoderStickyFaults;
+import com.ctre.phoenix.sensors.MagnetFieldStrength;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
