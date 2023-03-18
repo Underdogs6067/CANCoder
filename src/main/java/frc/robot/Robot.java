@@ -24,8 +24,8 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final VictorSP gearDrive = new VictorSP(0);
   private Joystick myJoystick = new Joystick(0);
-  CANCoder _coder = new CANCoder(1);
-  int _loopCount = 0;
+  // CANCoder _coder = new CANCoder(1);
+  // int _loopCount = 0;
 
   
   /**
