@@ -90,9 +90,9 @@ public class Robot extends TimedRobot {
 
    //Pivot Arm
    if(myJoystick.getRawButton(5)) //this is l trigger
-   {gearDrive.set(1);}
+   {gearDrive.set(0.5);}
     else if (myJoystick.getRawButton(6))//this is r trigger
-    {gearDrive.set(-.8);}
+    {gearDrive.set(-.5);}
     else {gearDrive.set(0);}
   }
     //Cancoder
