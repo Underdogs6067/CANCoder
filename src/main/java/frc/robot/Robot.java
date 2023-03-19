@@ -12,7 +12,7 @@ import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.CANCoderFaults;
 import com.ctre.phoenix.sensors.CANCoderStickyFaults;
 import com.ctre.phoenix.sensors.MagnetFieldStrength;
-// import com.ctre.phoenix.sensors.WPI_CANCoder; // only for Canivore?
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   //BEGIN CTRE CANcoder sample code from:
   //github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java%20General/CANCoder/src/main/java/frc/robot/Robot.java
   final int PRINTOUT_DELAY = 100; // in Milliseconds
+  WPI_CANCoder _CANCoder = new WPI_CANCoder(1, "rio");
   CANCoderConfiguration _canCoderConfiguration = new CANCoderConfiguration();
 
     /**  
@@ -59,6 +60,8 @@ public class Robot extends TimedRobot {
     void printValue(MagnetFieldStrength val, String units, double timestamp) {
       System.out.printf("%20s %-20s @ %f%n", val.toString(), units, timestamp);
     }}
+
+    
   //END CTRE Sample code 
   /**
    * This function is run when the robot is first started up and should be used for any
