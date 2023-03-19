@@ -20,6 +20,7 @@ import com.ctre.phoenix.sensors.MagnetFieldStrength;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
+
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -37,32 +38,33 @@ public class Robot extends TimedRobot {
    * This Instrument class is designed to put that printing in a seperate thread
    * That way we can prevent loop overrun messages from occurring
    */
-  // class Instrument extends Thread {
-  //   void printFaults(CANCoderFaults faults) {
-  //     System.out.printf("Hardware fault: %s\t    Under Voltage fault: %s\t    Reset During Enable fault: %s\t    API Error fault: %s%n", 
-  //       faults.HardwareFault ? "True " : "False",
-  //       faults.UnderVoltage ? "True " : "False",
-  //       faults.ResetDuringEn ? "True " : "False",
-  //       faults.APIError ? "True " : "False");
-  //   }
-  //   void printFaults(CANCoderStickyFaults faults) {
-  //     System.out.printf("Hardware fault: %s\t    Under Voltage fault: %s\t    Reset During Enable fault: %s\t     API Error fault: %s%n", 
-  //       faults.HardwareFault ? "True " : "False",
-  //       faults.UnderVoltage ? "True " : "False",
-  //       faults.ResetDuringEn ? "True " : "False",
-  //       faults.APIError ? "True " : "False");
-  //   }
-  //   void printValue(double val, String units, double timestamp) {
-  //     System.out.printf("%20f %-20s @ %f%n", val, units, timestamp);
-  //   }
-  //   void printValue(MagnetFieldStrength val, String units, double timestamp) {
-  //     System.out.printf("%20s %-20s @ %f%n", val.toString(), units, timestamp);
-  //   }
+  class Instrument extends Thread {
+    void printFaults(CANCoderFaults faults) {
+      System.out.printf("Hardware fault: %s\t    Under Voltage fault: %s\t    Reset During Enable fault: %s\t    API Error fault: %s%n", 
+        faults.HardwareFault ? "True " : "False",
+        faults.UnderVoltage ? "True " : "False",
+        faults.ResetDuringEn ? "True " : "False",
+        faults.APIError ? "True " : "False");
+    }
+    void printFaults(CANCoderStickyFaults faults) {
+      System.out.printf("Hardware fault: %s\t    Under Voltage fault: %s\t    Reset During Enable fault: %s\t     API Error fault: %s%n", 
+        faults.HardwareFault ? "True " : "False",
+        faults.UnderVoltage ? "True " : "False",
+        faults.ResetDuringEn ? "True " : "False",
+        faults.APIError ? "True " : "False");
+    }
+    void printValue(double val, String units, double timestamp) {
+      System.out.printf("%20f %-20s @ %f%n", val, units, timestamp);
+    }
+    void printValue(MagnetFieldStrength val, String units, double timestamp) {
+      System.out.printf("%20s %-20s @ %f%n", val.toString(), units, timestamp);
+    }}
   //END CTRE Sample code 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
   @Override
   public void robotInit() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -77,6 +79,7 @@ public class Robot extends TimedRobot {
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
    */
+
   @Override
   public void robotPeriodic() {}
 
