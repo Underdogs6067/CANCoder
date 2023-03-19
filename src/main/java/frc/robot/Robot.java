@@ -122,7 +122,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
       /* Change the configuration configs as needed here */
-      _canCoderConfiguration.unitString = "Penguins";
+      _canCoderConfiguration.unitString = "driveshaft-rotations";
 
       _CANCoder.configAllSettings(_canCoderConfiguration);
     }
@@ -150,6 +150,7 @@ public class Robot extends TimedRobot {
        */
       new Instrument().start();
     }
+    // button 1 on myJoystick is A to clear sticky faults
     if(myJoystick.getRawButton(1)) {
       _CANCoder.clearStickyFaults();
     }
