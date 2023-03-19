@@ -28,7 +28,8 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final VictorSP gearDrive = new VictorSP(0);
   private Joystick myJoystick = new Joystick(0);
-  //BEGIN CTRE CANcoder sample code from:
+  
+  //CTRE CANcoder sample code from:
   //github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java%20General/CANCoder/src/main/java/frc/robot/Robot.java
   final int PRINTOUT_DELAY = 100; // in Milliseconds
   WPI_CANCoder _CANCoder = new WPI_CANCoder(1, "rio");
@@ -59,10 +60,57 @@ public class Robot extends TimedRobot {
     }
     void printValue(MagnetFieldStrength val, String units, double timestamp) {
       System.out.printf("%20s %-20s @ %f%n", val.toString(), units, timestamp);
-    }}
+    }
 
-    
-  //END CTRE Sample code 
+    public void run() {
+      /* Report position, absolute position, velocity, battery voltage */
+      double posValue = _CANCoder.getPosition();
+      String posUnits = _CANCoder.getLastUnitString();
+      double posTstmp = _CANCoder.getLastTimestamp();
+      
+      double absValue = _CANCoder.getAbsolutePosition();
+      String absUnits = _CANCoder.getLastUnitString();
+      double absTstmp = _CANCoder.getLastTimestamp();
+      
+      double velValue = _CANCoder.getVelocity();
+      String velUnits = _CANCoder.getLastUnitString();
+      double velTstmp = _CANCoder.getLastTimestamp();
+      
+      double batValue = _CANCoder.getBusVoltage();
+      String batUnits = _CANCoder.getLastUnitString();
+      double batTstmp = _CANCoder.getLastTimestamp();
+
+      /* Report miscellaneous attributes about the CANCoder */
+      MagnetFieldStrength magnetStrength = _CANCoder.getMagnetFieldStrength();
+      String magnetStrengthUnits = _CANCoder.getLastUnitString();
+      double magnetStrengthTstmp = _CANCoder.getLastTimestamp();
+
+      System.out.print("Position: ");
+      printValue(posValue, posUnits, posTstmp);
+      System.out.print("Abs Pos : ");
+      printValue(absValue, absUnits, absTstmp);
+      System.out.print("Velocity: ");
+      printValue(velValue, velUnits, velTstmp);
+      System.out.print("Battery : ");
+      printValue(batValue, batUnits, batTstmp);
+      System.out.print("Strength: ");
+      printValue(magnetStrength, magnetStrengthUnits, magnetStrengthTstmp);
+
+      /* Fault reporting */
+      CANCoderFaults faults = new CANCoderFaults();
+      _CANCoder.getFaults(faults);
+      CANCoderStickyFaults stickyFaults = new CANCoderStickyFaults();
+      _CANCoder.getStickyFaults(stickyFaults);
+
+      System.out.println("Faults:");
+      printFaults(faults);
+      System.out.println("Sticky Faults:");
+      printFaults(stickyFaults);
+
+      System.out.println();
+      System.out.println();
+    }
+  }
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -73,7 +121,14 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-  }
+      /* Change the configuration configs as needed here */
+      _canCoderConfiguration.unitString = "Penguins";
+
+      _CANCoder.configAllSettings(_canCoderConfiguration);
+    }
+  
+    int count = 0;
+
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -84,7 +139,21 @@ public class Robot extends TimedRobot {
    */
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    if(count++ >= PRINTOUT_DELAY / 10) {
+      count = 0;
+
+      /**  
+       * Doing lots of printing in Java creates a large overhead 
+       * This Instrument class is designed to put that printing in a seperate thread
+       * That way we can prevent loop overrun messages from occurring
+       */
+      new Instrument().start();
+    }
+    if(myJoystick.getRawButton(1)) {
+      _CANCoder.clearStickyFaults();
+    }
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
