@@ -4,6 +4,7 @@
 
 package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
@@ -32,7 +33,8 @@ public class Robot extends TimedRobot {
   //CTRE CANcoder sample code from:
   //github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java%20General/CANCoder/src/main/java/frc/robot/Robot.java
   final int PRINTOUT_DELAY = 100; // in Milliseconds
-  WPI_CANCoder _CANCoder = new WPI_CANCoder(1, "rio");
+  WPI_CANCoder _CANCoder1 = new WPI_CANCoder(1, "rio");
+  WPI_CANCoder _CANCoder2 = new WPI_CANCoder(2, "rio");
   CANCoderConfiguration _canCoderConfiguration = new CANCoderConfiguration();
 
     /**  
@@ -64,26 +66,26 @@ public class Robot extends TimedRobot {
 
     public void run() {
       /* Report position, absolute position, velocity, battery voltage */
-      double posValue = _CANCoder.getPosition();
-      String posUnits = _CANCoder.getLastUnitString();
-      double posTstmp = _CANCoder.getLastTimestamp();
+      double posValue = _CANCoder1.getPosition();
+      String posUnits = _CANCoder1.getLastUnitString();
+      double posTstmp = _CANCoder1.getLastTimestamp();
       
-      double absValue = _CANCoder.getAbsolutePosition();
-      String absUnits = _CANCoder.getLastUnitString();
-      double absTstmp = _CANCoder.getLastTimestamp();
+      double absValue = _CANCoder1.getAbsolutePosition();
+      String absUnits = _CANCoder1.getLastUnitString();
+      double absTstmp = _CANCoder1.getLastTimestamp();
       
-      double velValue = _CANCoder.getVelocity();
-      String velUnits = _CANCoder.getLastUnitString();
-      double velTstmp = _CANCoder.getLastTimestamp();
+      double velValue = _CANCoder1.getVelocity();
+      String velUnits = _CANCoder1.getLastUnitString();
+      double velTstmp = _CANCoder1.getLastTimestamp();
       
-      double batValue = _CANCoder.getBusVoltage();
-      String batUnits = _CANCoder.getLastUnitString();
-      double batTstmp = _CANCoder.getLastTimestamp();
+      double batValue = _CANCoder1.getBusVoltage();
+      String batUnits = _CANCoder1.getLastUnitString();
+      double batTstmp = _CANCoder1.getLastTimestamp();
 
       /* Report miscellaneous attributes about the CANCoder */
-      MagnetFieldStrength magnetStrength = _CANCoder.getMagnetFieldStrength();
-      String magnetStrengthUnits = _CANCoder.getLastUnitString();
-      double magnetStrengthTstmp = _CANCoder.getLastTimestamp();
+      MagnetFieldStrength magnetStrength = _CANCoder1.getMagnetFieldStrength();
+      String magnetStrengthUnits = _CANCoder1.getLastUnitString();
+      double magnetStrengthTstmp = _CANCoder1.getLastTimestamp();
 
       System.out.print("Position: ");
       printValue(posValue, posUnits, posTstmp);
@@ -98,9 +100,9 @@ public class Robot extends TimedRobot {
 
       /* Fault reporting */
       CANCoderFaults faults = new CANCoderFaults();
-      _CANCoder.getFaults(faults);
+      _CANCoder1.getFaults(faults);
       CANCoderStickyFaults stickyFaults = new CANCoderStickyFaults();
-      _CANCoder.getStickyFaults(stickyFaults);
+      _CANCoder1.getStickyFaults(stickyFaults);
 
       System.out.println("Faults:");
       printFaults(faults);
@@ -122,9 +124,9 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
       /* Change the configuration configs as needed here */
-      _canCoderConfiguration.unitString = "driveshaft-rotations";
+      _canCoderConfiguration.unitString = "shaft";
 
-      _CANCoder.configAllSettings(_canCoderConfiguration);
+      _CANCoder1.configAllSettings(_canCoderConfiguration);
     }
   
     int count = 0;
@@ -152,7 +154,8 @@ public class Robot extends TimedRobot {
     }
     // button 1 on myJoystick is A to clear sticky faults
     if(myJoystick.getRawButton(1)) {
-      _CANCoder.clearStickyFaults();
+      _CANCoder1.clearStickyFaults();
+      _CANCoder2.clearStickyFaults();
     }
   }
 
